@@ -362,7 +362,8 @@ func encoder(fw *Writer, toEncode <-chan *writerBlock, toCompress chan<- *writer
 		if block.err == nil {
 			block.encoded = new(bytes.Buffer)
 			for _, item := range block.items {
-				block.err = fw.dataCodec.Encode(block.encoded, item)
+				// bypass encoding, write directly
+				_, block.err = item.(*bytes.Buffer).WriteTo(block.encoded)
 				if block.err != nil {
 					break // ??? drops remainder of items on the floor
 				}

@@ -391,7 +391,8 @@ decodeLoop:
 		} else {
 			for i := 0; i < block.datumCount; i++ {
 				var datum Datum
-				datum.Value, datum.Err = fr.dataCodec.Decode(block.r)
+				// bypass decoding, pass reader directly
+				datum.Value = block.r
 				if datum.Value == nil && datum.Err == nil {
 					break decodeLoop
 				}
